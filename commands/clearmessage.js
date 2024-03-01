@@ -20,7 +20,7 @@ module.exports = {
   name: "clearmessage",
   description: "Clears the message.",
   permissions: "0x0000000000000800",
- options:[
+  options:[
       {
         name: 'amount',
         type: 'INTEGER',
@@ -28,7 +28,7 @@ module.exports = {
         required: true,
       },
     ],
- run: async execute(interaction) {
+  run: async execute(interaction) {
     if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
       return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
     }
