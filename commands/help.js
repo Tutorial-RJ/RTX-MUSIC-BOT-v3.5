@@ -63,13 +63,8 @@ module.exports = {
         .setStyle(ButtonStyle.Link);
 
       const button2 = new ButtonBuilder()
-        .setLabel('Discord')
-        .setURL('https://discord.gg/FUEHs7RCqz')
-        .setStyle(ButtonStyle.Link);
-
-      const button3 = new ButtonBuilder()
-        .setLabel('Code')
-        .setURL('https://replit.com/@BEASTGAMERS1?tab=community')
+        .setLabel('Actual Code Tutorial')
+        .setURL('https://youtu.be/xvFZjo5PgG0?si=EqsiF3vqpvsrpnCq')
         .setStyle(ButtonStyle.Link);
 
       const row = new ActionRowBuilder()
