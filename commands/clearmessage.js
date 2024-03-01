@@ -14,7 +14,7 @@ for (const file of commandFiles) {
 }
 
 const commands = client.commands.map(command => command.data.toJSON());
-const rest = new REST({ version: '9' }).setToken('YOUR_BOT_TOKEN');
+const rest = new REST({ version: '9' }).setToken.env.TOKEN;
 
 (async () => {
   try {
