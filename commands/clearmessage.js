@@ -1,12 +1,26 @@
-const { ApplicationCommandOptionType } = require('discord.js');
+/*
+
+  ██████╗░████████╗██╗░░██╗           
+  ██╔══██╗╚══██╔══╝╚██╗██╔╝          
+  ██████╔╝░░░██║░░░░╚███╔╝░          
+  ██╔══██╗░░░██║░░░░██╔██╗░          
+  ██║░░██║░░░██║░░░██╔╝╚██╗          
+  ╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝          
+
+   
+   # MADE BY RTX!! FEEL FREE TO USE ANY PART OF CODE
+   ## FOR HELP CONTACT ME ON DISCORD
+   ## Contact    [ DISCORD SERVER :  https://discord.gg/FUEHs7RCqz ]
+   ## YT : https://www.youtube.com/channel/UCPbAvYWBgnYhliJa1BIrv0A
+*/
+const db = require("../mongoDB");
 const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
-  data: {
-      name: "clearmessage",
-      description: "Clears the msg",
-      permissions: "0x0000000000000800",
-      options:[
+  name: "clearmessage",
+  description: "Clears the message.",
+  permissions: "0x0000000000000800",
+ options:[
       {
         name: 'amount',
         type: 'INTEGER',
@@ -14,8 +28,7 @@ module.exports = {
         required: true,
       },
     ],
-  },
-  async execute(interaction) {
+ run: async execute(interaction) {
     if (!interaction.member.permissions.has('MANAGE_MESSAGES')) {
       return interaction.reply({ content: 'You do not have permission to use this command.', ephemeral: true });
     }
@@ -25,7 +38,7 @@ module.exports = {
     if (amount <= 0 || amount > 100) {
       return interaction.reply({ content: 'You must provide a number between 1 and 100.', ephemeral: true });
     }
-
+    
     try {
       await interaction.channel.bulkDelete(amount);
       const embed = new EmbedBuilder()
@@ -44,3 +57,19 @@ module.exports = {
     }
   },
 };
+
+/*
+
+  ██████╗░████████╗██╗░░██╗           
+  ██╔══██╗╚══██╔══╝╚██╗██╔╝          
+  ██████╔╝░░░██║░░░░╚███╔╝░          
+  ██╔══██╗░░░██║░░░░██╔██╗░          
+  ██║░░██║░░░██║░░░██╔╝╚██╗          
+  ╚═╝░░╚═╝░░░╚═╝░░░╚═╝░░╚═╝          
+
+   
+   # MADE BY RTX!! FEEL FREE TO USE ANY PART OF CODE
+   ## FOR HELP CONTACT ME ON DISCORD
+   ## Contact    [ DISCORD SERVER :  https://discord.gg/FUEHs7RCqz ]
+   ## YT : https://www.youtube.com/channel/UCPbAvYWBgnYhliJa1BIrv0A
+*/
