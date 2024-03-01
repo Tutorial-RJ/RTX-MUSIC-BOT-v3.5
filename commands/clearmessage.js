@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Client, Intents, Collection } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
@@ -14,7 +15,7 @@ for (const file of commandFiles) {
 }
 
 const commands = client.commands.map(command => command.data.toJSON());
-const rest = new REST({ version: '9' }).setToken.env.TOKEN;
+const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
 (async () => {
   try {
@@ -45,3 +46,5 @@ client.on('interactionCreate', async interaction => {
     await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
   }
 });
+
+client.login(process.env.TOKEN);
