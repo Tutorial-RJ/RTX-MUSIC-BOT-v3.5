@@ -1,29 +1,47 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { Client, Intents, Collection } = require('discord.js');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
+const fs = require('fs');
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('clearmessage')
-    .setDescription('Clear messages from the channel')
-    .addIntegerOption(option =>
-      option.setName('amount')
-        .setDescription('The number of messages to clear')
-        .setRequired(true)),
-  async execute(interaction) {
-    const amount = interaction.options.getInteger('amount');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
-    if (amount <= 0) {
-      return await interaction.reply('Please provide a valid number of messages to clear.');
-    }
+client.commands = new Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-    if (amount > 100) {
-      return await interaction.reply('You can only delete up to 100 messages at a time.');
-    }
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.data.name, command);
+}
 
-    await interaction.channel.bulkDelete(amount + 1);
-    const embed = new MessageEmbed()
-      .setColor('#ff0000')
-      .setDescription(`Cleared ${amount} messages.`);
-    await interaction.reply({ embeds: [embed] });
-  },
-};
+const commands = client.commands.map(command => command.data.toJSON());
+const rest = new REST({ version: '9' }).setToken('YOUR_BOT_TOKEN');
+
+(async () => {
+  try {
+    console.log('Started refreshing application (/) commands.');
+
+    await rest.put(
+      Routes.applicationGuildCommands('YOUR_CLIENT_ID', 'YOUR_GUILD_ID'),
+      { body: commands },
+    );
+
+    console.log('Successfully reloaded application (/) commands.');
+  } catch (error) {
+    console.error(error);
+  }
+})();
+
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isCommand()) return;
+
+  const { commandName } = interaction;
+
+  if (!client.commands.has(commandName)) return;
+
+  try {
+    await client.commands.get(commandName).execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+  }
+});
