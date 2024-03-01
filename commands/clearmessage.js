@@ -3,9 +3,10 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: {
-    name: 'clearmessage',
-    description: 'Clears the specified number of messages in the channel.',
-    options: [
+      name: "clearmessage",
+      description: "Clears the msg",
+      permissions: "0x0000000000000800",
+      options:[
       {
         name: 'amount',
         type: 'INTEGER',
